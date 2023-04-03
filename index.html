@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>find Viewer</title>
+   
+    </style>
+  </head>
+  <body>
+    <form>
+      <label for="find-name">Find Name:</label>
+      <input type="text" id="find-name" name="find-name" required>
+      <button type="submit">Submit</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+      const form = document.querySelector('form');
+      const resultDiv = document.querySelector('#result');
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const findName = document.querySelector('#find-name').value;
+
+        fetch(`/find/${encodeURIComponent(findName)}`)
+          .then(response => response.json())
+          .then(data => {
+            resultDiv.innerHTML = `
+              <h2>${data.name}</h2>
+              <img src="${data.image}" alt="${data.name}">
+            `;
+          })
+          .catch(error => {
+            resultDiv.innerHTML = `<p>${error.message}</p>`;
+          });
+      });
+    </script>
+  </body>
+</html>
